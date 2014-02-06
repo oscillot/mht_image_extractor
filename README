@@ -1,0 +1,6 @@
+Quick and dirty utility to extract base64 encoded images from MHT files. I
+use this to extract the images from files generated from the Windows problem
+steps recorder tool (Win+R > psr.exe).
+
+As of now no image verification is done, but the successful base64 decoding
+*should* be sufficient.
