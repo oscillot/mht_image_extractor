@@ -17,7 +17,7 @@ def extract_images(mht, output_dir):
     with open(mht, 'r') as fp:
         mht_text = fp.read()
     matches = re.findall(IMG_PAT, mht_text, re.M)
-    for match in matches:
+    for i, match in enumerate(matches):
         img_type = match[0]
         img_enc = match[1]
         img_fname = match[2]
@@ -30,6 +30,9 @@ def extract_images(mht, output_dir):
 
         with open(os.path.join(output_dir, img_fname), 'wb') as fp:
             fp.write(dec_img_data)
+
+        print '%d/%d: %s Found. Extracted %s.' % (i, len(matches), img_type,
+                                                  img_fname)
 
 if __name__ == "__main__":
     USAGE = """
