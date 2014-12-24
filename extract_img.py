@@ -14,6 +14,8 @@ IMG_PAT = r"""
 
 
 def extract_images(mht, output_dir):
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
     with open(mht, 'r') as fp:
         mht_text = fp.read()
     matches = re.findall(IMG_PAT, mht_text, re.M)
@@ -49,8 +51,10 @@ if __name__ == "__main__":
                       metavar='DIR')
     options, _ = parser.parse_args()
 
-    if not hasattr(options, 'mht') or not hasattr(options, 'output_dir'):
+    if getattr(options, 'mht') is None or getattr(options, 'output_dir') is None:
         print USAGE
+        print 'Arguments you passed (should be none): %s' % str(_)
+        print 'Options you passed: %s' % str(options)
         sys.exit(1)
 
     extract_images(options.mht, options.output_dir)
