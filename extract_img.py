@@ -13,7 +13,7 @@ IMG_PAT = r"""
 """
 
 
-def extract_images(mht, output_dir):
+def extract_images(mht, output_dir, name):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
     with open(mht, 'r') as fp:
@@ -22,7 +22,10 @@ def extract_images(mht, output_dir):
     for i, match in enumerate(matches):
         img_type = match[0]
         img_enc = match[1]
-        img_fname = match[2]
+        if name == None:
+            img_fname = match[2]
+        else:
+            img_fname = name + (i + 1)
         img_data = match[3]
 
         if img_enc == 'base64':
@@ -49,6 +52,8 @@ if __name__ == "__main__":
     parser.add_option('-o', '--output-dir', dest="output_dir", help='The '
                       'path to output the unpacked files and folders.',
                       metavar='DIR')
+    parser.add_option('-n', '--name', dest="name", help='Optionally set '
+                      'your own filenames (enforces sequential numbering)')
     options, _ = parser.parse_args()
 
     if getattr(options, 'mht') is None or getattr(options, 'output_dir') is None:
@@ -57,4 +62,4 @@ if __name__ == "__main__":
         print 'Options you passed: %s' % str(options)
         sys.exit(1)
 
-    extract_images(options.mht, options.output_dir)
+    extract_images(options.mht, options.output_dir, options.name)
